@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section id={Section.HERO} ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section id={Section.HERO} ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden" style={{ position: 'relative' }}>
 
       {/* Background Elements */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 flex items-center justify-center opacity-10">
@@ -64,11 +64,16 @@ const Hero: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="mt-12"
+          className="mt-12 flex flex-col sm:grid sm:grid-cols-2 gap-4 w-fit mx-auto"
         >
-          <a href={`#${Section.PROJECTS}`} className="inline-block px-8 py-4 bg-white/5 border border-white/10 hover:bg-cyan-500/10 hover:border-cyan-500/50 text-white rounded-none backdrop-blur-sm transition-all duration-300 font-mono group">
+          <a href={`#${Section.PROJECTS}`} className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-cyan-500/10 hover:border-cyan-500/50 text-white rounded-lg backdrop-blur-sm transition-all duration-300 font-mono group text-center">
             <span className="mr-2 text-cyan-400">./</span>
-            EXECUTE_PROJECTS
+            PROJECTS
+            <span className="ml-2 group-hover:translate-x-1 inline-block transition-transform">&rarr;</span>
+          </a>
+          <a href={`#${Section.CHAT}`} className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-purple-500/10 hover:border-purple-500/50 text-white rounded-lg backdrop-blur-sm transition-all duration-300 font-mono group text-center">
+            <span className="mr-2 text-purple-400">./</span>
+            NEXUS
             <span className="ml-2 group-hover:translate-x-1 inline-block transition-transform">&rarr;</span>
           </a>
         </motion.div>

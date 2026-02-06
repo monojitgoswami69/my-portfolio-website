@@ -221,12 +221,12 @@ const AIChat: React.FC = () => {
   };
 
   return (
-    <section ref={containerRef} className="pb-[120px] relative z-10">
+    <section id="chat" ref={containerRef} className="pb-[60px] lg:pb-[120px] relative z-10 scroll-mt-[85px]" style={{ position: 'relative' }}>
       <motion.div
         style={{ opacity, y }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
       >
-        <div id="chat" className="w-full scroll-mt-[90px]">
+        <div className="w-full">
           {/* Section Header */}
           <div
             className="mb-2"

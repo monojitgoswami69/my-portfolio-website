@@ -2,24 +2,21 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Section } from '../types';
 import { Scan, Activity, Monitor, Code, Terminal } from 'lucide-react';
-import {
-  SiPython, SiC, SiCplusplus, SiJavascript, SiTypescript, SiPostgresql
-} from 'react-icons/si';
 
-// Skill icons data with real brand icons
+// Skill icons data using static assets
 const skillsData = [
-  { icon: SiPython, name: 'Python', color: '#3776AB', url: 'https://www.python.org/' },
-  { icon: SiC, name: 'C', color: '#A8B9CC', url: 'https://en.wikipedia.org/wiki/C_(programming_language)' },
-  { icon: SiCplusplus, name: 'C++', color: '#00599C', url: 'https://isocpp.org/' },
-  { icon: SiPostgresql, name: 'SQL', color: '#336791', url: 'https://www.postgresql.org/' },
-  { icon: SiJavascript, name: 'JavaScript', color: '#F7DF1E', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
-  { icon: SiTypescript, name: 'TypeScript', color: '#3178C6', url: 'https://www.typescriptlang.org/' },
-
+  { image: '/assets/python.webp', name: 'Python' },
+  { image: '/assets/c.webp', name: 'C' },
+  { image: '/assets/cpp.webp', name: 'C++' },
+  { image: '/assets/js.webp', name: 'JavaScript' },
+  { image: '/assets/ts.webp', name: 'TypeScript' },
+  { image: '/assets/mysql.webp', name: 'SQL' },
+  { image: '/assets/mongodb.webp', name: 'MongoDB' },
 ];
 
 const toolsData = [
-  'Firebase', 'MongoDB', 'GCP', 'Pinecone', 'ChromaDB',
-  'Langchain', 'HuggingFace', 'Transformers'
+  'Firebase',"GCP", 'Pinecone', 'ChromaDB',
+  'Langchain', 'Transformers'
   , 'Git', 'Linux'
 ];
 
@@ -97,7 +94,19 @@ const Skills: React.FC = () => {
   const [middleColumnHeight, setMiddleColumnHeight] = useState<number | null>(null);
   const [textFontSize, setTextFontSize] = useState(1.2); // Main text font size in rem
   const [quoteFontSize, setQuoteFontSize] = useState(2.5); // Quote font size in rem
+  const [responsiveIconSize, setResponsiveIconSize] = useState(64); // Mobile icon size
   const isMetricsInView = useInView(metricsRef, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    const updateIconSize = () => {
+      // Mobile: 64px (w-16), Desktop: 48px (lg:w-12)
+      setResponsiveIconSize(window.innerWidth >= 1024 ? ICON_SIZE : 64);
+    };
+    
+    updateIconSize();
+    window.addEventListener('resize', updateIconSize);
+    return () => window.removeEventListener('resize', updateIconSize);
+  }, []);
 
 
   const { scrollYProgress } = useScroll({
@@ -147,17 +156,17 @@ const Skills: React.FC = () => {
   }, [textFontSize, quoteFontSize, adjustLayout]);
 
   // Changed from import to static string path to compatible with browser ESM
-  const PROFILE_IMG = "/assets/profile.jpeg";
+  const PROFILE_IMG = "/assets/profile.webp";
 
   return (
-    <section ref={ref} className="pt-24 pb-20 relative z-10 overflow-hidden">
+    <section ref={ref} className="pt-24 pb-10 lg:pb-20 relative z-10 overflow-hidden" style={{ position: 'relative' }}>
       {/* Parallax Background Element */}
       <motion.div
         style={{ rotate: rotateBg, opacity: 0.05 }}
         className="absolute -right-64 top-0 w-[800px] h-[800px] border-[40px] border-slate-700 rounded-full pointer-events-none"
       />
 
-      <div id="skills" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-[136px]">
+      <div id="skills" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-[85px]">
         {/* Section Title */}
         <motion.h2
           style={{ opacity }}
@@ -204,41 +213,44 @@ const Skills: React.FC = () => {
           {/* Middle Column - Tech Stack (Fixed width based on icons) */}
           <motion.div
             ref={middleColumnRef}
-            style={{ width: `${middleColumnWidth}px`, maxWidth: '100%' }}
-            className="flex-shrink-0 order-3 lg:order-2"
+            style={{ 
+              '--desktop-width': `${middleColumnWidth}px`
+            } as any}
+            className="flex-shrink-0 order-3 lg:order-2 w-full lg:w-[var(--desktop-width)]"
           >
             <div className="p-6 bg-slate-900/50 border border-slate-800 rounded-xl flex flex-col">
               {/* Skills Section */}
               <div>
                 <div className="text-cyan-400 font-mono text-sm tracking-wider mb-5 text-center lg:text-left">
-                  SKILLS // 2.1
+                  2.1 // SKILLS
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center lg:justify-start">
                   <div
-                    className="grid"
+                    className="grid place-items-center"
                     style={{
-                      gridTemplateColumns: `repeat(${ICONS_PER_ROW}, ${ICON_SIZE}px)`,
+                      gridTemplateColumns: `repeat(${ICONS_PER_ROW}, ${responsiveIconSize}px)`,
                       gap: `${ICON_GAP}px`
                     }}
                   >
                     {skillsData.map((skill, index) => (
-                      <motion.a
+                      <motion.div
                         key={skill.name}
-                        href={skill.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.05 }}
-                        className="cursor-pointer flex items-center justify-center"
+                        className="flex flex-col items-center justify-start gap-2"
                         title={skill.name}
                       >
-                        <skill.icon
-                          className="lg:!w-12 lg:!h-12 !w-16 !h-16"
-                          style={{ color: skill.color }}
+                        <img
+                          src={skill.image}
+                          alt={skill.name}
+                          className="lg:w-12 lg:h-12 w-16 h-16 object-contain"
                         />
-                      </motion.a>
+                        <span className="text-xs lg:text-[11px] font-mono text-slate-400 text-center">
+                          {skill.name}
+                        </span>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -250,7 +262,7 @@ const Skills: React.FC = () => {
               {/* Tools Section */}
               <div>
                 <div className="text-purple-400 font-mono text-sm tracking-wider mb-5 text-center lg:text-left">
-                  TOOLS // 2.2
+                  2.2 // TOOLS
                 </div>
                 <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                   {toolsData.map((tool, index) => (
@@ -272,8 +284,11 @@ const Skills: React.FC = () => {
 
           {/* Right Column - Holographic Image Card */}
           <motion.div
-            style={{ height: middleColumnHeight ? `${middleColumnHeight}px` : 'auto' }}
-            className="relative flex items-center justify-center flex-shrink-0 w-full lg:w-auto order-1 lg:order-3"
+            style={{ 
+              height: middleColumnHeight ? `${middleColumnHeight}px` : 'auto',
+              '--desktop-width': `${middleColumnWidth}px`
+            } as any}
+            className="relative flex items-center justify-center flex-shrink-0 w-full lg:w-[var(--desktop-width)] order-1 lg:order-3"
           >
             <div className="relative group w-full h-full bg-[#0c0c0c] rounded-2xl border border-slate-800 p-2 overflow-hidden shadow-2xl transition-all duration-300 hover:border-cyan-500/40">
 

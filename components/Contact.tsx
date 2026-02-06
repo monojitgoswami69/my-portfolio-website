@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Mail, Linkedin, Github, Twitter, ChevronUp } from 'lucide-react';
+import { Mail, Linkedin, Github, Twitter } from 'lucide-react';
 import { Section } from '../types';
 
 const Contact: React.FC = () => {
@@ -30,7 +30,7 @@ const Contact: React.FC = () => {
   } | null>(null);
 
   useEffect(() => {
-    fetch('/contact.json')
+    fetch('/data/contact.json')
       .then(res => res.json())
       .then(data => setConfig(data))
       .catch(err => console.error('Failed to load contact config:', err));
@@ -74,13 +74,6 @@ const Contact: React.FC = () => {
     }
   };
 
-  const scrollToChat = () => {
-    const element = document.getElementById(Section.CHAT);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const socialLinks = config ? [
     { Icon: Github, url: config.contact.socials.github },
     { Icon: Linkedin, url: config.contact.socials.linkedin },
@@ -89,27 +82,12 @@ const Contact: React.FC = () => {
   ] : [];
 
   return (
-    <section ref={ref} className="min-h-screen relative z-20 bg-slate-950 flex flex-col justify-center overflow-hidden pt-24 pb-8">
-      {/* Upward Arrow at Top */}
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="w-full flex justify-center z-20 mb-0"
-      >
-        <button
-          onClick={scrollToChat}
-          className="text-slate-500 hover:text-cyan-400 transition-colors duration-300 cursor-pointer p-2"
-          aria-label="Scroll to Nexus"
-        >
-          <ChevronUp size={32} />
-        </button>
-      </motion.div>
-
+    <section ref={ref} className="min-h-screen relative z-20 bg-slate-950 flex flex-col justify-center overflow-hidden pt-24 pb-4 lg:pb-8" style={{ position: 'relative' }}>
       <motion.div
         style={{ opacity }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
       >
-        <div id="contact" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 scroll-mt-[136px]">
+        <div id="contact" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 scroll-mt-[85px]">
 
           {/* Left Column - Contact Info */}
           <div>

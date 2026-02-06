@@ -33,15 +33,15 @@ const isValidLink = (link?: string): boolean => {
 const getStatusColor = (status?: string): string => {
   switch (status?.toLowerCase()) {
     case 'completed':
-      return 'bg-green-500/20 text-green-400 border-green-500/30';
+      return 'bg-green-500 text-white';
     case 'in progress':
-      return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      return 'bg-yellow-500 text-black';
     case 'maintained':
-      return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      return 'bg-blue-500 text-white';
     case 'archived':
-      return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      return 'bg-slate-500 text-white';
     default:
-      return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      return 'bg-slate-500 text-white';
   }
 };
 
@@ -75,7 +75,7 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         className="relative w-full max-w-5xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col"
-        style={{ maxHeight: 'calc(100vh - 2rem)' }}
+        style={{ maxHeight: 'calc(100vh - 120px)' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button - Fixed position on card */}
@@ -97,38 +97,44 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
 
+            {/* Featured Badge - Top Left */}
+            {project.featured && (
+              <div className="absolute top-4 left-4">
+                <span className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono bg-yellow-400 text-black rounded-lg font-bold">
+                  <Star size={12} fill="currentColor" />
+                  Featured
+                </span>
+              </div>
+            )}
+
             {/* Title Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
-              <div className="flex flex-wrap items-center gap-3 mb-2">
-                {project.status && (
-                  <span className={`px-3 py-1 text-xs font-mono rounded-full border ${getStatusColor(project.status)}`}>
-                    {project.status}
-                  </span>
-                )}
-                {project.category && (
-                  <span className="px-3 py-1 text-xs font-mono bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full">
-                    {project.category}
-                  </span>
-                )}
-                {project.featured && (
-                  <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-full">
-                    <Star size={12} fill="currentColor" />
-                    Featured
-                  </span>
-                )}
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-white">{project.name}</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-white">{project.name}</h2>
             </div>
           </div>
 
           {/* Content */}
-          <div className="pt-0 pb-6 px-6 space-y-6">
+          <div className="pb-6 px-6 space-y-4">
+            {/* Badges */}
+            <div className="flex flex-wrap items-center gap-2">
+              {project.status && (
+                <span className={`px-3 py-1 text-xs font-mono rounded-lg ${getStatusColor(project.status)}`}>
+                  {project.status}
+                </span>
+              )}
+              {project.category && (
+                <span className="px-3 py-1 text-xs font-mono bg-purple-500 text-white rounded-lg font-semibold">
+                  {project.category}
+                </span>
+              )}
+            </div>
+
             {/* Tech Stack */}
             <div className="flex flex-wrap gap-2">
               {project.techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1.5 text-sm font-mono bg-slate-800 text-cyan-200/80 rounded-lg border border-slate-700"
+                  className="px-3 py-1.5 text-xs font-mono bg-slate-800 text-cyan-200/80 rounded-lg border border-slate-700"
                 >
                   {tech}
                 </span>
@@ -137,7 +143,7 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
 
             {/* Long Description */}
             <div className="prose prose-invert max-w-none">
-              <p className="text-slate-300 leading-relaxed whitespace-pre-line">
+              <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-line">
                 {project.longDescription || project.description}
               </p>
             </div>
@@ -145,14 +151,14 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
             {/* Features */}
             {project.features && project.features.length > 0 && (
               <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
-                <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-4">
-                  <Zap size={18} className="text-yellow-400" />
+                <h3 className="flex items-center gap-2 text-base font-bold text-white mb-4">
+                  <Zap size={16} className="text-yellow-400" />
                   Key Features
                 </h3>
                 <ul className="space-y-2">
                   {project.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-slate-300">
-                      <ChevronRight size={16} className="text-cyan-400 mt-1 flex-shrink-0" />
+                    <li key={idx} className="flex items-start gap-3 text-slate-300 text-xs">
+                      <ChevronRight size={14} className="text-cyan-400 mt-1 flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -164,20 +170,20 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
             <div className="grid md:grid-cols-2 gap-4">
               {project.challenges && (
                 <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
-                  <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-3">
-                    <Target size={18} className="text-red-400" />
+                  <h3 className="flex items-center gap-2 text-base font-bold text-white mb-3">
+                    <Target size={16} className="text-red-400" />
                     Challenges
                   </h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">{project.challenges}</p>
+                  <p className="text-slate-300 text-xs leading-relaxed">{project.challenges}</p>
                 </div>
               )}
               {project.learnings && (
                 <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
-                  <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-3">
-                    <Lightbulb size={18} className="text-yellow-400" />
+                  <h3 className="flex items-center gap-2 text-base font-bold text-white mb-3">
+                    <Lightbulb size={16} className="text-yellow-400" />
                     Learnings
                   </h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">{project.learnings}</p>
+                  <p className="text-slate-300 text-xs leading-relaxed">{project.learnings}</p>
                 </div>
               )}
             </div>
@@ -209,9 +215,9 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold rounded-lg transition-all duration-300"
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold rounded-lg transition-all duration-300 text-sm"
                 >
-                  <ExternalLink size={18} />
+                  <ExternalLink size={16} />
                   Live Demo
                 </a>
               )}
@@ -220,13 +226,13 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 text-white font-bold rounded-lg border border-slate-400/30 transition-all duration-300 hover:bg-white/10"
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 text-white font-bold rounded-lg border border-slate-400/30 transition-all duration-300 hover:bg-white/10 text-sm"
                   style={{
                     backgroundColor: 'rgba(51, 65, 85, 0.5)',
                     backdropFilter: 'blur(4px)'
                   }}
                 >
-                  <Github size={18} />
+                  <Github size={16} />
                   Source Code
                 </a>
               )}
@@ -247,7 +253,7 @@ const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
 
   useEffect(() => {
-    fetch('/projects.json')
+    fetch('/data/projects.json')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to load projects');
         return res.json();
@@ -264,8 +270,8 @@ const Projects: React.FC = () => {
 
   return (
     <>
-      <section className="pb-20 relative z-10 overflow-hidden">
-        <div id="projects" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-[90px]">
+      <section className="pb-10 lg:pb-20 relative z-10 overflow-hidden">
+        <div id="projects" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-[85px]">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -294,22 +300,39 @@ const Projects: React.FC = () => {
             </div>
           )}
 
+          {/* No Projects Fallback */}
+          {!loading && !error && projects.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+               <p className="text-slate-400 text-lg mb-6 font-mono">
+                 No projects featured at the moment.
+               </p>
+               <a 
+                 href="https://github.com/monojitgoswami69" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 rounded-lg text-cyan-400 hover:text-cyan-300 transition-all duration-300 font-mono group"
+               >
+                 Visit GitHub to explore <Github size={18} className="group-hover:translate-x-1 transition-transform" />
+               </a>
+            </div>
+          )}
+
           {/* Projects Grid */}
-          {!loading && !error && (
+          {!loading && !error && projects.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  onMouseEnter={() => setHoveredId(String(index))}
-                  onMouseLeave={() => setHoveredId(null)}
-                  onClick={() => setSelectedProject(project)}
-                  className="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-colors duration-300 flex flex-col cursor-pointer"
-                >
-                  {/* Featured Badge */}
+                {projects.map((project, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    onMouseEnter={() => setHoveredId(String(index))}
+                    onMouseLeave={() => setHoveredId(null)}
+                    onClick={() => setSelectedProject(project)}
+                    className="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-colors duration-300 flex flex-col cursor-pointer"
+                  >
+                    {/* Featured Badge */}
                   {project.featured && (
                     <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 px-2 py-1 text-xs font-mono bg-cyan-500/90 text-slate-900 rounded font-bold">
                       <Star size={12} fill="currentColor" />
