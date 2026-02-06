@@ -18,6 +18,9 @@ export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
   timestamp: Date;
+  isError?: boolean;
+  isSuccess?: boolean;
+  isSystem?: boolean;
 }
 
 export enum Section {
