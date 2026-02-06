@@ -33,15 +33,15 @@ const isValidLink = (link?: string): boolean => {
 const getStatusColor = (status?: string): string => {
   switch (status?.toLowerCase()) {
     case 'completed':
-      return 'bg-green-500 text-white';
+      return 'bg-green-500/20 text-green-400 border-green-500/30';
     case 'in progress':
-      return 'bg-yellow-500 text-black';
+      return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
     case 'maintained':
-      return 'bg-blue-500 text-white';
+      return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
     case 'archived':
-      return 'bg-slate-500 text-white';
+      return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
     default:
-      return 'bg-slate-500 text-white';
+      return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
   }
 };
 
@@ -118,12 +118,12 @@ const ProjectModal: React.FC<{ project: ProjectData; onClose: () => void }> = ({
             {/* Badges */}
             <div className="flex flex-wrap items-center gap-2">
               {project.status && (
-                <span className={`px-3 py-1 text-xs font-mono rounded-lg ${getStatusColor(project.status)}`}>
+                <span className={`px-3 py-1 text-xs font-mono rounded-lg border ${getStatusColor(project.status)}`}>
                   {project.status}
                 </span>
               )}
               {project.category && (
-                <span className="px-3 py-1 text-xs font-mono bg-purple-500 text-white rounded-lg font-semibold">
+                <span className="px-3 py-1 text-xs font-mono bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-lg font-semibold">
                   {project.category}
                 </span>
               )}

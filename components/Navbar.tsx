@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Code2, Terminal, Cpu, MessageSquare, Mail } from 'lucide-react';
+import { ChevronsDown, Code2, Terminal, Cpu, MessageSquare, Mail } from 'lucide-react';
 import { Section } from '../types';
 
 interface NavbarProps {
@@ -50,15 +50,26 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between md:justify-center h-16 relative">
+        <div className="flex items-center justify-between md:justify-center h-16">
 
-          {/* Mobile Menu Button (Absolute positioned to stay left on mobile) */}
-          <div className="flex md:hidden absolute left-0">
+          {/* Mobile Navigation - Content on blurred container */}
+          <div className="flex md:hidden w-full">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
+              className="w-full flex items-center justify-center px-4 py-2 font-mono text-sm transition-all duration-300 relative"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">
+                  {navItems.find(item => item.id === activeSection)?.icon}
+                </span>
+                <span className="text-cyan-400 font-medium">
+                  {navItems.find(item => item.id === activeSection)?.label}
+                </span>
+              </div>
+              <ChevronsDown
+                size={20}
+                className={`text-slate-400 transition-transform duration-300 absolute right-4 ${isOpen ? 'rotate-180' : ''}`}
+              />
             </button>
           </div>
 
@@ -84,30 +95,43 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       </div>
 
       {/* Gradient fade overlay below navbar for smooth content transition */}
-      <div
-        className="absolute left-0 right-0 top-full h-8 pointer-events-none"
-        style={{
-          background: 'linear-gradient(to bottom, rgba(2, 6, 23, 0.8) 0%, rgba(2, 6, 23, 0.4) 50%, transparent 100%)'
-        }}
-      />
-
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden bg-slate-950">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="w-full text-left flex items-center gap-3 px-3 py-4 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800 font-mono"
-              >
-                {item.icon}
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
+      {!isOpen && (
+        <div
+          className="absolute left-0 right-0 top-full h-2 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(2, 6, 23, 0.8) 0%, rgba(2, 6, 23, 0.4) 50%, transparent 100%)'
+          }}
+        />
       )}
+
+      {/* Mobile dropdown menu */}
+      <div
+        className={`md:hidden absolute top-16 left-0 right-0 overflow-hidden transition-all duration-300 rounded-b-lg ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        }`}
+        style={{
+          backgroundColor: 'rgba(2, 6, 23, 0.97)'
+        }}
+      >
+        <div className="px-4 py-2 space-y-1 max-w-7xl mx-auto">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium font-mono transition-all duration-200 ${
+                activeSection === item.id
+                  ? 'text-cyan-400 bg-cyan-400/10'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+              }`}
+            >
+              <span className={activeSection === item.id ? 'text-cyan-400' : 'text-slate-400'}>
+                {item.icon}
+              </span>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
     </nav>
   );
 };
