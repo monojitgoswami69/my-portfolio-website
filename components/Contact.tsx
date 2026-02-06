@@ -10,6 +10,14 @@ const Contact: React.FC = () => {
     offset: ["start end", "end end"]
   });
 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
   const [config, setConfig] = useState<{
     contact: {
       email: string;
@@ -29,6 +37,42 @@ const Contact: React.FC = () => {
   }, []);
 
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.message) {
+      setSubmitStatus('error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const apiUrl = import.meta.env.VITE_PORTFOLIO_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/v1/communication/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Failed to submit contact form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const scrollToChat = () => {
     const element = document.getElementById(Section.CHAT);
@@ -97,24 +141,65 @@ const Contact: React.FC = () => {
 
           {/* Right Column - Form */}
           <div>
-            <form className="space-y-3 lg:space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 lg:space-y-4">
               <div className="grid grid-cols-2 gap-3 lg:gap-4">
                 <div className="space-y-1 lg:space-y-2">
                   <label className="text-xs lg:text-sm font-mono text-slate-500">USER_ID</label>
-                  <input type="text" className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 lg:p-3 text-sm lg:text-base text-white focus:border-cyan-500 outline-none transition-colors" placeholder="Name" />
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 lg:p-3 text-sm lg:text-base text-white focus:border-cyan-500 outline-none transition-colors"
+                    placeholder="Name"
+                    required
+                  />
                 </div>
                 <div className="space-y-1 lg:space-y-2">
                   <label className="text-xs lg:text-sm font-mono text-slate-500">RETURN_ADDRESS</label>
-                  <input type="email" className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 lg:p-3 text-sm lg:text-base text-white focus:border-cyan-500 outline-none transition-colors" placeholder="Email" />
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 lg:p-3 text-sm lg:text-base text-white focus:border-cyan-500 outline-none transition-colors"
+                    placeholder="Email"
+                    required
+                  />
                 </div>
               </div>
               <div className="space-y-1 lg:space-y-2">
                 <label className="text-xs lg:text-sm font-mono text-slate-500">PAYLOAD</label>
-                <textarea rows={3} className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 lg:p-3 text-sm lg:text-base text-white focus:border-cyan-500 outline-none transition-colors lg:rows-4" placeholder="Message..." />
+                <textarea
+                  rows={3}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 lg:p-3 text-sm lg:text-base text-white focus:border-cyan-500 outline-none transition-colors lg:rows-4"
+                  placeholder="Message..."
+                  required
+                />
               </div>
-              <button className="w-full py-3 lg:py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-sm lg:text-base font-bold tracking-widest rounded-lg transition-colors font-mono uppercase relative overflow-hidden group">
-                <span className="relative z-10">Transmit Data</span>
-                <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
+              
+              {submitStatus === 'success' && (
+                <div className="text-sm text-green-400 font-mono">
+                  ✓ Message transmitted successfully!
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="text-sm text-red-400 font-mono">
+                  ✗ Transmission failed. Please try again.
+                </div>
+              )}
+              
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-3 lg:py-4 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 disabled:cursor-not-allowed text-white text-sm lg:text-base font-bold tracking-widest rounded-lg transition-colors font-mono uppercase relative overflow-hidden group"
+              >
+                <span className="relative z-10">
+                  {isSubmitting ? 'Transmitting...' : 'Transmit Data'}
+                </span>
+                {!isSubmitting && (
+                  <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
+                )}
               </button>
             </form>
           </div>
