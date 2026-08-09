@@ -4,7 +4,12 @@ import { useLenis } from 'lenis/react';
 import { motion, AnimatePresence } from '@/lib/motion';
 import { HomeSection } from './types';
 
-const NAV_SCROLL_OFFSET = -82;
+/**
+ * CRITICAL DESIGN SYSTEM CONSTRAINT:
+ * NAV_SCROLL_OFFSET is calibrated strictly to -30 (in tandem with CSS scroll-mt-[30px] and section pt-8).
+ * DO NOT modify this value. Changing this offset breaks section header scroll positioning relative to the sticky navbar.
+ */
+const NAV_SCROLL_OFFSET = -30;
 
 interface NavbarProps {
     activeSection: HomeSection;

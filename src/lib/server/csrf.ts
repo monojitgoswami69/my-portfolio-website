@@ -24,11 +24,13 @@ export function isSameOriginRequest(request: Request): boolean {
 
   if (!host) return false;
 
-  const expectedOrigin = `https://${host}`;
-  const expectedOriginInsecure = `http://${host}`;
-
   if (origin) {
-    return origin === expectedOrigin || origin === expectedOriginInsecure;
+    try {
+      const originHost = new URL(origin).host;
+      return originHost === host;
+    } catch {
+      return false;
+    }
   }
 
   if (referer) {

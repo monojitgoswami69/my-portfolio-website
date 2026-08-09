@@ -2,15 +2,15 @@ import "server-only";
 
 import { Redis } from "@upstash/redis";
 
-const UPSTASH_REDIS_URL = process.env.UPSTASH_REDIS_URL;
-const UPSTASH_REDIS_TOKEN = process.env.UPSTASH_REDIS_TOKEN;
+const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
 let cachedRedis: Redis | null = null;
 
 function getRedis(): Redis | null {
   if (cachedRedis) return cachedRedis;
-  if (!UPSTASH_REDIS_URL || !UPSTASH_REDIS_TOKEN) return null;
-  cachedRedis = new Redis({ url: UPSTASH_REDIS_URL, token: UPSTASH_REDIS_TOKEN });
+  if (!UPSTASH_REDIS_REST_URL || !UPSTASH_REDIS_REST_TOKEN) return null;
+  cachedRedis = new Redis({ url: UPSTASH_REDIS_REST_URL, token: UPSTASH_REDIS_REST_TOKEN });
   return cachedRedis;
 }
 

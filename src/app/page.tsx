@@ -1,6 +1,6 @@
 import HomePage from "@/features/home/HomePage";
 import { readContactFile, readProjectsFile } from "@/lib/content/site-data";
-import { JsonLd } from "@/lib/seo/JsonLd";
+import { JsonLd } from "@/lib/seo/JsonLdScript";
 import { buildSiteJsonLd } from "@/lib/seo/jsonLd";
 
 export const revalidate = 60;

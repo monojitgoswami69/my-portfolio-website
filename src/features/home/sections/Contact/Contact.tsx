@@ -91,12 +91,17 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
         { Icon: Mail, url: `mailto:${contact.email}`, label: 'Send an email' }
     ];
 
+    /* 
+     * CRITICAL LAYOUT & SCROLL ANCHORING:
+     * - pt-8 provides internal top padding for header visual alignment.
+     * - scroll-mt-[30px] aligns with NAV_SCROLL_OFFSET (-30) in Navbar.tsx for perfect sticky nav clearance.
+     * DO NOT modify pt-8 or scroll-mt-[30px] independently.
+     */
     return (
         <section
             id={HomeSection.CONTACT}
             ref={ref}
-            className="relative z-20 bg-transparent flex flex-col justify-center overflow-hidden pt-8 pb-12 lg:pb-20 scroll-mt-[85px]"
-           
+            className="relative z-20 bg-transparent flex flex-col justify-center overflow-hidden pt-8 pb-12 lg:pb-20 scroll-mt-[30px]"
         >
             <motion.div
                 initial={{ opacity: 0, y: 50 }}

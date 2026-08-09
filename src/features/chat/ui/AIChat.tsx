@@ -198,8 +198,14 @@ const AIChat: React.FC<AIChatProps> = ({ projects, contact }) => {
         };
     }, [scrollRef]);
 
+    /* 
+     * CRITICAL LAYOUT & SCROLL ANCHORING:
+     * - pt-8 provides internal top padding matching Section 2.0 so headers align identically.
+     * - scroll-mt-[30px] aligns with NAV_SCROLL_OFFSET (-30) in Navbar.tsx for perfect sticky nav clearance.
+     * DO NOT modify pt-8 or scroll-mt-[30px] independently.
+     */
     return (
-        <section id="chat" ref={containerRef} className="pb-8 lg:pb-12 relative z-10 scroll-mt-[85px]">
+        <section id="chat" ref={containerRef} className="pt-8 pb-8 lg:pb-12 relative z-10 scroll-mt-[30px]">
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -247,10 +253,10 @@ const AIChat: React.FC<AIChatProps> = ({ projects, contact }) => {
                                         {history.map((msg) => (
                                             <div key={msg.id} className="break-words">
                                                 {msg.role === 'user' ? (
-                                                    <div className="flex gap-2 items-start font-mono">
-                                                        <span className="text-[#b48ead] font-bold shrink-0 mt-[2px]">➜</span>
-                                                        <span className="text-[#88c0d0] font-bold shrink-0 mt-[2px]">~</span>
-                                                        <span className="text-[#88c0d0] break-all whitespace-pre-wrap flex-1">{msg.text}</span>
+                                                    <div className="flex gap-2 items-center font-mono">
+                                                        <span className="text-[#cf88c7] font-bold shrink-0">➜</span>
+                                                        <span className="text-[#88c0d0] font-bold shrink-0">~</span>
+                                                        <span className="text-[#cf88c7] break-all whitespace-pre-wrap flex-1">{msg.text}</span>
                                                     </div>
                                                 ) : (
                                                     <div className={`mt-2 mb-4 space-y-1 font-mono ${msg.isSuccess ? 'text-slate-300' :
@@ -267,6 +273,11 @@ const AIChat: React.FC<AIChatProps> = ({ projects, contact }) => {
                                                                     return (
                                                                         <div
                                                                             key={opt}
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                setInput(opt);
+                                                                                inputRef.current?.focus();
+                                                                            }}
                                                                             className={`flex items-center gap-2 transition-all duration-200 cursor-pointer group/item ${isMovingIndex ? 'text-white' : 'text-slate-500 hover:text-white'}`}
                                                                         >
                                                                             <span className={`w-4 font-bold shrink-0 hidden sm:block ${isMovingIndex ? 'text-[#88c0d0] animate-pulse' : 'invisible'}`}>&gt;</span>
@@ -332,10 +343,10 @@ const AIChat: React.FC<AIChatProps> = ({ projects, contact }) => {
 
                                         {hasBooted && !isBooting && !isLoading && (
                                             <div className="mt-4">
-                                                <form onSubmit={handleSend} className="flex items-start group">
-                                                    <span className="text-[#b48ead] font-bold mr-2 mt-[2px]">➜</span>
-                                                    <span className="text-[#88c0d0] font-bold mr-2 mt-[2px]">~</span>
-                                                    <div className="relative flex-grow flex items-start">
+                                                <form onSubmit={handleSend} className="flex items-center gap-2 group">
+                                                    <span className="text-[#cf88c7] font-bold text-sm md:text-[15px] select-none shrink-0">➜</span>
+                                                    <span className="text-[#88c0d0] font-bold text-sm md:text-[15px] select-none shrink-0">~</span>
+                                                    <div className="relative flex-grow flex items-center">
                                                         <textarea
                                                             ref={inputRef}
                                                             value={input}
@@ -343,8 +354,8 @@ const AIChat: React.FC<AIChatProps> = ({ projects, contact }) => {
                                                                 setInput(e.target.value);
                                                             }}
                                                             onKeyDown={handleKeyDown}
-                                                            className="w-full bg-transparent border-none outline-none text-[#88c0d0] text-sm md:text-[15px] caret-[#88c0d0] break-words resize-none overflow-hidden"
-                                                            style={{ minHeight: '24px', paddingTop: '2px', fontFamily: '"JetBrains Mono", "JetBrainsMono Nerd Font", monospace' }}
+                                                            className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus:!outline-none focus-visible:!outline-none no-focus-ring text-[#cf88c7] text-sm md:text-[15px] caret-[#cf88c7] break-words resize-none overflow-hidden p-0 leading-normal"
+                                                            style={{ minHeight: '24px', fontFamily: '"JetBrains Mono", "JetBrainsMono Nerd Font", monospace', outline: 'none', boxShadow: 'none' }}
                                                             rows={1}
                                                             maxLength={1024}
                                                             aria-label="Terminal Input"

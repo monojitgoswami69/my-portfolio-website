@@ -8,8 +8,33 @@ interface MarkdownRendererProps {
 }
 
 function normalizeDisplayText(text: string) {
-    return text
+    // Repair ill-formed bold markers so react-markdown always renders them.
+    // Gemini occasionally leaves ** unclosed or pads it with inner spaces
+    // (** bold **), which CommonMark refuses to bold and renders literally.
+    const repaired = text
         .replace(/\r\n/g, '\n')
+        .replace(/\*\*[ \t]*\*\*/g, '')                     // drop empty bold (** ** / ****)
+        .replace(/\*\*[ \t]*([^*\n]+?)[ \t]*\*\*/g, '**$1**') // trim inner spaces: ** x ** -> **x**
+        .split('\n')
+        .map((line) => {
+            const count = (line.match(/\*\*/g) || []).length;
+            // Odd count => one dangling ** is unpaired and would render
+            // literally. Strip the last one so it reads as plain text.
+            if (count % 2 !== 0) {
+                const idx = line.lastIndexOf('**');
+                if (idx !== -1) {
+                    return line.slice(0, idx) + line.slice(idx + 2);
+                }
+            }
+            return line;
+        })
+        .join('\n');
+    // Note: italic markers (_ and *) are NOT auto-balanced here. _ appears in
+    // identifiers/URLs (e.g. Shiksha_Saathi) and * in bullets/multiplication,
+    // so balancing them would mangle legitimate text. The system prompt
+    // already requires emphasis markers to be closed.
+
+    return repaired
         .replace(/([^\s*])(\*\*[^*\n]+?\*\*)/g, '$1 $2')
         .replace(/\*\*([^*\n]+)\*\*(?=[A-Z])/g, '**$1** ')
         .replace(/([^\s_])(_[^_\n]+?_)/g, '$1 $2')

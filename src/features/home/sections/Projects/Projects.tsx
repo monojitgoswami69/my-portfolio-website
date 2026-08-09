@@ -37,9 +37,15 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         });
     }, [projects]);
 
+    /* 
+     * CRITICAL LAYOUT & SCROLL ANCHORING:
+     * - pt-8 provides internal top padding matching Section 2.0 so headers align identically.
+     * - scroll-mt-[30px] aligns with NAV_SCROLL_OFFSET (-30) in Navbar.tsx for perfect sticky nav clearance.
+     * DO NOT modify pt-8 or scroll-mt-[30px] independently.
+     */
     return (
         <>
-            <section id={HomeSection.PROJECTS} className="pb-10 lg:pb-20 relative z-10 overflow-hidden scroll-mt-[85px]">
+            <section id={HomeSection.PROJECTS} className="pt-8 pb-10 lg:pb-20 relative z-10 overflow-hidden scroll-mt-[30px]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0 }}

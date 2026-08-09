@@ -20,14 +20,13 @@ function getJwtSecret() {
   return new TextEncoder().encode(secret);
 }
 
-const JWT_SECRET = getJwtSecret();
-
 export const AUTH_COOKIE_NAME = "auth_token";
 
 export async function createAuthToken(
   user: AuthUser,
   expirationTime: string | number = "1h"
 ) {
+  const secret = getJwtSecret();
   return new SignJWT({
     sub: user.userId,
     username: user.username,
@@ -36,11 +35,12 @@ export async function createAuthToken(
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expirationTime)
-    .sign(JWT_SECRET);
+    .sign(secret);
 }
 
 export async function verifyAuthToken(token: string) {
-  const { payload } = await jwtVerify(token, JWT_SECRET);
+  const secret = getJwtSecret();
+  const { payload } = await jwtVerify(token, secret);
   return payload as AuthTokenPayload;
 }
 

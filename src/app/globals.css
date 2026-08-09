@@ -177,6 +177,12 @@
         background: #88c0d0;
     }
 
+    /* Text Selection */
+    ::selection {
+        background-color: #88c0d0;
+        color: #01020a;
+    }
+
     /* Custom Scrollbar - Firefox */
     * {
         scrollbar-width: thin;
@@ -191,6 +197,23 @@
         display: none;
     }
 }
+
+/* Universal Neo-Brutalist Focus Ring */
+*:focus-visible {
+    outline: 2px solid #88c0d0 !important;
+    outline-offset: 2px !important;
+}
+
+/* Custom focus ring reset for specific inputs */
+.no-focus-ring,
+.no-focus-ring:focus,
+.no-focus-ring:focus-visible,
+.no-focus-ring:focus-within {
+    outline: none !important;
+    outline-offset: 0 !important;
+    box-shadow: none !important;
+}
+
 
 /* Skip-to-content link — visually hidden until focused via keyboard */
 .skip-to-content {

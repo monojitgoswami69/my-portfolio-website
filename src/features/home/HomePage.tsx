@@ -31,8 +31,11 @@ const sectionOrder = [
   HomeSection.CONTACT,
 ];
 
-const NAV_ANCHOR_OFFSET = 90;
-const ACTIVE_SECTION_VIEWPORT_OFFSET = 0.38;
+/**
+ * CRITICAL SCROLL-SPY THRESHOLD:
+ * Target focal line (scrollY + 100px) is synchronized with NAV_SCROLL_OFFSET (-30) and section scroll-mt-[30px].
+ * Mute lock duration (1800ms) matches Lenis 1.5s smooth scroll + mobile animation delay.
+ */
 
 interface HomePageProps {
   projects: SiteProject[];
@@ -55,6 +58,8 @@ export default function HomePage({ projects, contact }: HomePageProps) {
     return window.matchMedia("(max-width: 768px)").matches ? 150 : 350;
   }, []);
 
+  const navLockTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     let frameId = 0;
 
@@ -63,13 +68,32 @@ export default function HomePage({ projects, contact }: HomePageProps) {
         return;
       }
 
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // 1. Top of page check
+      if (scrollY < 120) {
+        setActiveSection(HomeSection.HERO);
+        return;
+      }
+
+      // 2. Bottom of page check
+      if (viewportHeight + scrollY >= documentHeight - 15) {
+        setActiveSection(HomeSection.CONTACT);
+        return;
+      }
+
+      // 3. Deterministic focal line check (100px below viewport top)
+      const targetLine = scrollY + 100;
+
       const sections = sectionOrder
         .map((section) => {
           const element = document.getElementById(section);
           return element
             ? {
                 id: section,
-                top: element.getBoundingClientRect().top + window.scrollY,
+                top: element.getBoundingClientRect().top + scrollY,
               }
             : null;
         })
@@ -79,19 +103,8 @@ export default function HomePage({ projects, contact }: HomePageProps) {
         return;
       }
 
-      const scrollPosition =
-        window.scrollY +
-        Math.max(NAV_ANCHOR_OFFSET, window.innerHeight * ACTIVE_SECTION_VIEWPORT_OFFSET);
-      const isAtBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-
-      if (isAtBottom) {
-        setActiveSection(sections[sections.length - 1].id);
-        return;
-      }
-
       const current = sections.reduce((active, section) => {
-        return section.top <= scrollPosition ? section : active;
+        return section.top <= targetLine ? section : active;
       }, sections[0]);
 
       setActiveSection(current.id);
@@ -115,11 +128,19 @@ export default function HomePage({ projects, contact }: HomePageProps) {
 
   const handleSectionChange = (section: HomeSection) => {
     setActiveSection(section);
-    scrollMuteCounter.current++;
-    setTimeout(() => {
-      scrollMuteCounter.current = Math.max(0, scrollMuteCounter.current - 1);
-    }, 150);
+    if (navLockTimeoutRef.current) {
+      clearTimeout(navLockTimeoutRef.current);
+    }
+    scrollMuteCounter.current = 1;
+    navLockTimeoutRef.current = setTimeout(() => {
+      scrollMuteCounter.current = 0;
+    }, 1800);
   };
+
+  const nativeParticleCount = useMemo(() => {
+    if (typeof window === "undefined") return 60;
+    return window.matchMedia("(max-width: 768px)").matches ? 40 : 60;
+  }, []);
 
   return (
     <LazyMotion features={domMax} strict>
@@ -130,7 +151,7 @@ export default function HomePage({ projects, contact }: HomePageProps) {
         {/* Native Canvas Particles - High Performance */}
         {showFx && useNativeParticles && (
           <NativeParticles
-            count={window.matchMedia("(max-width: 768px)").matches ? 40 : 60}
+            count={nativeParticleCount}
             colors={PARTICLE_COLORS}
             size={1.2}
             speed={0.08}
