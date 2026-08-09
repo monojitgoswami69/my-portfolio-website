@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getClientIp, getRateLimitSnapshot } from "@/features/chat/server/server";
+import { getRateLimitSnapshot } from "@/features/chat/server/server";
+import { getClientIp } from "@/lib/server/client-ip";
 
 export const runtime = "nodejs";
 

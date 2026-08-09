@@ -5,11 +5,10 @@ import {
   ensureBodySize,
   getChatHealth,
   getChatResponse,
-  getClientIp,
   generateGuestId,
-  incrementCounter,
   validateChatRequest,
 } from "@/features/chat/server/server";
+import { getClientIp } from "@/lib/server/client-ip";
 
 export const runtime = "nodejs";
 
@@ -39,7 +38,6 @@ export async function POST(request: Request) {
       payload.message,
       payload.history || []
     );
-    await incrementCounter();
 
     return NextResponse.json(
       {

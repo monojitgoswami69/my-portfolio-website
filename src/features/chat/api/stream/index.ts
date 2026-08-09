@@ -3,12 +3,11 @@ import {
   ChatValidationError,
   enforceRateLimit,
   ensureBodySize,
-  getClientIp,
   generateGuestId,
-  incrementCounter,
   streamChatResponse,
   validateChatRequest,
 } from "@/features/chat/server/server";
+import { getClientIp } from "@/lib/server/client-ip";
 
 export const runtime = "nodejs";
 
@@ -43,7 +42,6 @@ export async function POST(request: Request) {
           }
 
           controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-          await incrementCounter();
           controller.close();
         } catch (error) {
           console.error("POST /api/chat/stream error:", error);

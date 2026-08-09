@@ -145,8 +145,7 @@ export default function HomePage({ projects, contact }: HomePageProps) {
   return (
     <LazyMotion features={domMax} strict>
       <div className="min-h-screen bg-transparent text-slate-200 selection:bg-[#88c0d0]/30 selection:text-[#88c0d0]">
-        {/* Vibrant background grid mesh commented out in favor of solid midnight blue with grain */}
-        {/* showFx && <BackgroundGrid /> */}
+        {/* Vibrant background grid mesh omitted in favor of solid midnight blue with grain */}
 
         {/* Native Canvas Particles - High Performance */}
         {showFx && useNativeParticles && (

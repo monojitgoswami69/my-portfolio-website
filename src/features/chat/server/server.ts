@@ -12,9 +12,6 @@ import Groq from "groq-sdk";
 import type { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
 
 import { Redis } from "@upstash/redis";
-import { sql } from "drizzle-orm";
-import { initializeDatabase, isDatabaseConfigured } from "@/features/admin/server/db-utils";
-import { weeklyMetrics } from "@/features/admin/server/schema";
 import { APP_VERSION } from "@/lib/version";
 import {
   geminiGenerateResponseText,
@@ -293,20 +290,6 @@ function getCommonExposedHeaders() {
       "Retry-After",
     ].join(", "),
   };
-}
-
-export function getClientIp(request: Request) {
-  // Vercel sets x-vercel-forwarded-for which is authoritative on their platform
-  const vercelForwarded = request.headers.get("x-vercel-forwarded-for");
-  if (vercelForwarded) {
-    return vercelForwarded.split(",")[0]?.trim() || "unknown";
-  }
-  // Generic x-forwarded-for: first entry is the client (subsequent are intermediate proxies).
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    return forwarded.split(",")[0]?.trim() || "unknown";
-  }
-  return request.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
 function base32Encode(buffer: Uint8Array) {
@@ -589,42 +572,6 @@ function getAiClient() {
   return new Groq({ apiKey });
 }
 // ═══════════════════════════════════════════════════════════════════════
-
-function isoDate(date: Date) {
-  return date.toISOString().split("T")[0] || "";
-}
-
-export async function incrementCounter() {
-  if (!isDatabaseConfigured()) {
-    return;
-  }
-
-  try {
-    const db = initializeDatabase();
-    const today = isoDate(new Date());
-
-    const result = await db
-      .insert(weeklyMetrics)
-      .values({
-        date: today,
-        queries: 1,
-      })
-      .onConflictDoUpdate({
-        target: weeklyMetrics.date,
-        set: {
-          queries: sql`${weeklyMetrics.queries} + 1`,
-          updatedAt: new Date(),
-        },
-      })
-      .returning({ date: weeklyMetrics.date, queries: weeklyMetrics.queries });
-
-    if (!result[0]) {
-      console.error("incrementCounter: upsert returned no row for", today);
-    }
-  } catch (error) {
-    console.error("Failed to increment weekly metrics:", error);
-  }
-}
 
 // ═══════════════════════════════════════════════════════════════════════
 // [INACTIVE] GROQ GENERATION (non-streaming)

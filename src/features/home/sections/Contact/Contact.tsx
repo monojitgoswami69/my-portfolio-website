@@ -155,7 +155,7 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
                                         maxLength={CONTACT_FIELD_LIMITS.name}
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full bg-[var(--bg-input)] border-2 border-[var(--border-color)] px-3 py-2 lg:py-2.5 text-xs lg:text-sm font-mono text-white focus:border-[#88c0d0] focus:ring-0 outline-none transition-colors rounded-base mt-1.5"
+                                        className="w-full bg-[var(--bg-input)] border-2 border-[var(--border-color)] px-3 py-2 lg:py-2.5 text-xs lg:text-sm font-mono text-white focus:border-[#88c0d0] focus:ring-0 outline-none focus:outline-none focus-visible:outline-none focus:!outline-none focus-visible:!outline-none no-focus-ring transition-colors rounded-base mt-1.5"
                                         placeholder="Name"
                                         required
                                     />
@@ -175,7 +175,7 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
                                         maxLength={CONTACT_FIELD_LIMITS.email}
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full bg-[var(--bg-input)] border-2 border-[var(--border-color)] px-3 py-2 lg:py-2.5 text-xs lg:text-sm font-mono text-white focus:border-[#88c0d0] focus:ring-0 outline-none transition-colors rounded-base mt-1.5"
+                                        className="w-full bg-[var(--bg-input)] border-2 border-[var(--border-color)] px-3 py-2 lg:py-2.5 text-xs lg:text-sm font-mono text-white focus:border-[#88c0d0] focus:ring-0 outline-none focus:outline-none focus-visible:outline-none focus:!outline-none focus-visible:!outline-none no-focus-ring transition-colors rounded-base mt-1.5"
                                         placeholder="Email"
                                         required
                                     />
@@ -195,7 +195,7 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
                                     maxLength={CONTACT_FIELD_LIMITS.message}
                                     value={formData.message}
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                    className="w-full bg-[var(--bg-input)] border-2 border-[var(--border-color)] px-3 py-2 lg:py-2.5 text-xs lg:text-sm font-mono text-white focus:border-[#88c0d0] focus:ring-0 outline-none transition-colors min-h-[100px] rounded-base mt-1.5"
+                                    className="w-full bg-[var(--bg-input)] border-2 border-[var(--border-color)] px-3 py-2 lg:py-2.5 text-xs lg:text-sm font-mono text-white focus:border-[#88c0d0] focus:ring-0 outline-none focus:outline-none focus-visible:outline-none focus:!outline-none focus-visible:!outline-none no-focus-ring transition-colors min-h-[100px] rounded-base mt-1.5"
                                     placeholder="Message..."
                                     required
                                 />
@@ -220,7 +220,7 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
                             <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full py-3 lg:py-4 bg-[#88c0d0] text-[#1b2234] border-2 border-transparent disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed disabled:border-transparent text-sm lg:text-base font-bold tracking-widest transition-all font-mono uppercase shadow-[var(--shadow-offset)] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] active:shadow-none active:transition-none rounded-base cursor-pointer"
+                                    className="w-full py-3 lg:py-4 bg-[#88c0d0] text-[#1b2234] border-2 border-transparent disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed disabled:border-transparent text-sm lg:text-base font-bold tracking-widest transition-all font-mono uppercase shadow-[var(--shadow-offset)] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] active:shadow-none active:transition-none rounded-base cursor-pointer focus:outline-none focus-visible:outline-none no-focus-ring"
                                 >
                                 {isSubmitting ? 'Transmitting...' : 'Transmit Data'}
                             </button>
