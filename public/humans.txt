@@ -1,0 +1,13 @@
+/* TEAM */
+  Developer: Monojit Goswami (MG)
+  Site: https://mgbuilds.in
+  GitHub: https://github.com/monojitgoswami69
+  LinkedIn: https://linkedin.com/in/monojitgoswami69
+  Twitter: @monojitgoswami9
+
+/* SITE */
+  Standards: HTML5, CSS3, TypeScript, Next.js App Router
+  Performance: Lenis Smooth Scroll, Turbopack, Framer Motion
+  Hosting: Vercel
+  DNS / CDN: Cloudflare
+  Language: English

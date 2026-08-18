@@ -8,7 +8,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: SITE_URL,
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 1,
+      priority: 1.0,
+      images: [
+        `${SITE_URL}/og_image/og-image.png`,
+        `${SITE_URL}/assets/profile.webp`,
+      ],
     },
   ];
 }
+

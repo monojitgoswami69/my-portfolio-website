@@ -11,7 +11,9 @@ import PWARegister from "@/features/pwa/PWARegister";
 import LenisProvider from "@/lib/LenisProvider";
 import {
   SITE_DESCRIPTION,
+  SITE_KEYWORDS,
   SITE_NAME,
+  SITE_NICKNAME,
   SITE_OG_IMAGE,
   SITE_OG_IMAGE_ALT,
   SITE_OG_IMAGE_HEIGHT,
@@ -71,7 +73,8 @@ export const metadata: Metadata = {
     template: SITE_TITLE_TEMPLATE,
   },
   description: SITE_DESCRIPTION,
-  applicationName: `${SITE_NAME} Portfolio`,
+  keywords: SITE_KEYWORDS,
+  applicationName: `${SITE_NAME} (${SITE_NICKNAME}) Portfolio`,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
@@ -110,10 +113,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "profile",
+    firstName: "Monojit",
+    lastName: "Goswami",
+    username: "monojitgoswami69",
+    gender: "male",
     title: SITE_TITLE_DEFAULT,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: `${SITE_NAME} Portfolio`,
+    siteName: `${SITE_NAME} (${SITE_NICKNAME}) Portfolio`,
     locale: "en_US",
     images: [
       {
@@ -138,7 +145,22 @@ export const metadata: Metadata = {
       },
     ],
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION,
+    other: {
+      "bing-site-verification": [
+        process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
+      ].filter(Boolean),
+    },
+  },
   category: "technology",
+  classification: "Portfolio & Software Engineering",
+  other: {
+    "profile:first_name": "Monojit",
+    "profile:last_name": "Goswami",
+    "profile:username": "monojitgoswami69",
+  },
 };
 
 export default function RootLayout({

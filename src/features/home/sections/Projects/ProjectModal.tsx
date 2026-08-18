@@ -137,7 +137,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                     <div className="relative h-40 md:h-72 overflow-hidden flex-shrink-0 rounded-t-[calc(12px-2px)]">
                         <Image
                             src={project.imageUrl}
-                            alt={project.name}
+                            alt={`${project.name} - Project preview by Monojit Goswami (MG)`}
                             fill
                             sizes="(max-width: 1024px) 100vw, 1024px"
                             className="object-cover rounded-t-[calc(12px-2px)]"

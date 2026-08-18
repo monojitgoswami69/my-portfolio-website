@@ -1,0 +1,34 @@
+# Monojit Goswami (MG)
+
+> Backend & AI Engineer | Official Portfolio: https://mgbuilds.in
+
+Monojit Goswami (MG), also active as monojitgoswami69, is a Backend and AIML Engineer specializing in production-grade Retrieval-Augmented Generation (RAG) systems, agentic AI workflows, and high-performance ML pipelines.
+
+## Profile Summary
+- **Full Name**: Monojit Goswami
+- **Short Name / Moniker**: MG
+- **Online Handle**: monojitgoswami69 / monojitgoswami9
+- **Role**: Backend & AIML Engineer
+- **Official Website**: https://mgbuilds.in
+- **Email**: monojit.goswami.0905@gmail.com
+- **GitHub**: https://github.com/monojitgoswami69
+- **LinkedIn**: https://linkedin.com/in/monojitgoswami69
+- **Twitter / X**: https://twitter.com/monojitgoswami9
+
+## Core Expertise & Skills
+- **Core Specialization**: RAG Architectures, Agentic AI Systems, High-Performance Backend Pipelines
+- **Languages**: Python, TypeScript, JavaScript, C, C++, SQL
+- **AI & LLM Technologies**: Pinecone, ChromaDB, LangChain, Gemini API, Groq, Transformers, Vector Embeddings
+- **Backend & Data**: FastAPI, Node.js, REST APIs, SSE (Server-Sent Events), Redis, Supabase, PostgreSQL, Firestore, Firebase
+- **Frontend & Web**: Next.js, React, Tailwind CSS, Framer Motion
+
+## Key Projects
+- [Shiksha Saathi](https://github.com/monojitgoswami69/Shiksha_Saathi): Production-ready RAG chatbot for academic institutions with dynamic prompt management, confidence gating, and human handoff.
+- [Campus Dost](https://github.com/monojitgoswami69/campus-dost): Multi-tenant SaaS evolution of Shiksha Saathi featuring isolated vector stores, multi-role RBAC, and institution-specific tenant configs.
+- [Codalyzer](https://github.com/monojitgoswami69): LLM-driven static code complexity analyzer providing Big-O runtime & space complexity estimations with optimization recommendations.
+
+## Links & Socials
+- Portfolio Website: https://mgbuilds.in
+- GitHub Profile: https://github.com/monojitgoswami69
+- LinkedIn Profile: https://linkedin.com/in/monojitgoswami69
+- Twitter/X Profile: https://x.com/monojitgoswami9

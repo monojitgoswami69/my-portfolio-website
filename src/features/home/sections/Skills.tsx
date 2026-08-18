@@ -64,7 +64,7 @@ const Skills: React.FC = () => {
                             <div className="relative w-full h-full border-2 border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden rounded-t-base rounded-b-none lg:rounded-base shadow-[var(--shadow-offset)] min-h-[400px]">
                                 <Image
                                     src={PROFILE_IMG}
-                                    alt="Monojit Goswami"
+                                    alt="Monojit Goswami (MG) - Backend and AI Engineer"
                                     fill
                                     priority
                                     sizes="(max-width: 1024px) 100vw, 420px"

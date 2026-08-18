@@ -214,7 +214,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onSelect }) =
                 <div className="absolute inset-0 hidden md:block bg-[#88c0d0]/10 opacity-100 group-hover:opacity-0 transition-opacity duration-300 z-10 pointer-events-none rounded-t-[calc(var(--radius-base)-2px)]" />
                 <Image
                     src={project.imageUrl}
-                    alt={project.name}
+                    alt={`${project.name} - Project by Monojit Goswami (MG)`}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover scale-[1.02] md:group-hover:scale-110 transition-all duration-700 ease-out md:grayscale md:group-hover:grayscale-0 will-change-transform pointer-events-none select-none rounded-t-[calc(var(--radius-base)-2px)]"
